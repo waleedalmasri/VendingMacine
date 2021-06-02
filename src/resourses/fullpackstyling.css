@@ -4,18 +4,18 @@
     -fx-prompt-text-fill:#D4CEE3;
 }
 
-.button1
+.button
 {
 -fx-background-color : #aad8d3;
 -fx-background-radius :  0 0 0 0;
 }
-.button1:hover
+.button:hover
 {
 -fx-background-color : #00adb5 ;
 -fx-background-radius :  0 0 0 0;
 }
 
-.button1:pressed
+.button:pressed
 {
 -fx-background-color : #00adb5 ;
 -fx-background-radius :  0 0 0 0;

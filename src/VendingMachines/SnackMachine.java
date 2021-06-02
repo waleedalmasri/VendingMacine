@@ -8,7 +8,6 @@ import Money.Note;
 import MoneySlot.MoneySlot;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Stack;
@@ -22,17 +21,17 @@ public class SnackMachine extends VendingMachine implements SnackMachineOperatio
         this.snacks = new Stack[4][2];
         for (int row = 0; row < 4; row++)
             for (int col = 0; col < 2; col++)
-                snacks[row][col] = new Stack<>();
+                snacks[row][col] = new Stack<Snack>();
         this.refillStock();
         this.refillBalance();
 
     }
 
-    public Stack[][] getSnacks() {
+    public Stack<Snack>[][] getSnacks() {
         return snacks;
     }
 
-    public void setSnacks(Stack[][] snacks) {
+    public void setSnacks(Stack<Snack>[][] snacks) {
         this.snacks = snacks;
     }
 
@@ -103,10 +102,9 @@ public class SnackMachine extends VendingMachine implements SnackMachineOperatio
 
 
     @Override
-    public void purchase(Item item) {
+    public boolean purchase(Item item) {
         this.calculateChange(item);
-        System.out.println(getCurrentBalance().getBalanceInUSD());
-        System.out.println(this.validateChange());
+        return (this.validateChange() && this.acceptMoney(item));
 
     }
 
@@ -122,7 +120,7 @@ public class SnackMachine extends VendingMachine implements SnackMachineOperatio
     }
 
     @Override
-    public boolean acceptMoney(Money money) {
-        return true;
+    public boolean acceptMoney(Item item) {
+        return this.getMoneySlot().getBalanceInUSD() >= item.getSellingPrice();
     }
 }

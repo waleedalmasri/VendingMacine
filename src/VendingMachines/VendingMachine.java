@@ -162,11 +162,11 @@ public abstract class VendingMachine {
     }
 
 
-    public abstract void purchase(Item item);
+    public abstract boolean purchase(Item item);
 
     public abstract void calculateChange(Item item);
 
     public abstract boolean validateMoney(Money money);
 
-    public abstract boolean acceptMoney(Money money);
+    public abstract boolean acceptMoney(Item item);
 }

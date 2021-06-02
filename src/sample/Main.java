@@ -15,8 +15,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        SnackMachine snackMachine = new SnackMachine(new MoneySlot("USD"), new MoneySlot("USD"));
-        snackMachine.purchase(new Snack("laviva", "faf", 50, 60, 5, 20));
         Parent root = FXMLLoader.load(getClass().getResource("HomeScreen.fxml"));
         primaryStage.setTitle("Vending Machine");
         primaryStage.setScene(new Scene(root, 1024, 768));
