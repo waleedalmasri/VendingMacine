@@ -5,6 +5,8 @@ import Money.Money;
 import MoneySlot.MoneySlot;
 import MoneySlot.NoteBalance;
 import MoneySlot.CoinsBalance;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
 

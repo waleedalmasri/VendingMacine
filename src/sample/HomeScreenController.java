@@ -11,14 +11,20 @@ import VendingMachines.SnackMachine;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,7 +32,7 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.ResourceBundle;
-import java.util.Stack;
+
 
 public class HomeScreenController implements Initializable {
     @FXML
@@ -41,7 +47,8 @@ public class HomeScreenController implements Initializable {
     Button confirmButton, cancelButton;
     @FXML
     Text currentBalance, toBeBalance;
-    SnackMachine snackMachine;
+
+    public static SnackMachine snackMachine;
     int selectedRow, selectedCol;
 
     DecimalFormat df = new DecimalFormat("###.##");
@@ -247,5 +254,23 @@ public class HomeScreenController implements Initializable {
 
     }
 
+    public void LoadScene() {
+
+        try {
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("reports.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UNIFIED);
+            stage.setTitle("Reports");
+            stage.setScene(new Scene(root1));
+            stage.show();
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 }

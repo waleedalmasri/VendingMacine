@@ -105,7 +105,7 @@ public class SnackMachine extends VendingMachine implements SnackMachineOperatio
     @Override
     public boolean purchase(int rowIndex, int colIndex) {
         if (validateChange()) {
-            snacks[rowIndex][colIndex].peek().calculateProfit(snacks[rowIndex][colIndex].peek().getPurchasingPrice(), snacks[rowIndex][colIndex].peek().getSellingPrice());
+            snacks[rowIndex][colIndex].peek().calculateProfit(snacks[rowIndex][colIndex].peek().getSellingPrice(), snacks[rowIndex][colIndex].peek().getPurchasingPrice());
             snacks[rowIndex][colIndex].peek().setAvailableItems(snacks[rowIndex][colIndex].peek().getAvailableItems() - 1);
             getTransactionsList().add(new Transaction(snacks[rowIndex][colIndex].peek().getName() + " Sold Successfully", snacks[rowIndex][colIndex].peek().getProfit(), new Date()));
             snacks[rowIndex][colIndex].pop();
