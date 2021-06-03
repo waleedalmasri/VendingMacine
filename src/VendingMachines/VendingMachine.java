@@ -224,6 +224,7 @@ public abstract class VendingMachine {
     }
 
     public abstract boolean purchase(int rowIndex, int colIndex);
+    public abstract boolean purchaseWithCard(int rowIndex, int colIndex);
 
     public abstract void calculateChange(Item item);
 

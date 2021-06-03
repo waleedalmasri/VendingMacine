@@ -77,7 +77,8 @@ public class HomeScreenController implements Initializable {
 
         for (int row = 0; row < 4; row++)
             for (int col = 0; col < 2; col++)
-                itemsGrid.add(createCustomizeLabel(snackMachine.getSnacks()[row][col].peek(), row, col), col, row);
+                if (snackMachine.getSnacks()[row][col].size() != 0)
+                    itemsGrid.add(createCustomizeLabel(snackMachine.getSnacks()[row][col].peek(), row, col), col, row);
     }
 
     public VBox createCustomizeLabel(Item item, int rowIndex, int colIndex) {
@@ -129,6 +130,7 @@ public class HomeScreenController implements Initializable {
     }
 
     public void onChangePaymentMethod() {
+        confirmButton.setDisable(!snackMachine.acceptMoney(snackMachine.getSnacks()[selectedRow][selectedCol].peek()) || (!payWithCash.isSelected()) && !payWithCard.isSelected());
         if (payWithCash.isSelected()) {
             coinsBox.setDisable(false);
             notesBox.setDisable(false);
@@ -171,15 +173,19 @@ public class HomeScreenController implements Initializable {
     }
 
     public void updateStatus() {
-        price.setText(String.valueOf(snackMachine.getSnacks()[selectedRow][selectedCol].peek().getSellingPrice()));
-        snackMachine.calculateChange(snackMachine.getSnacks()[selectedRow][selectedCol].peek());
-        snackMachine.getMoneySlot().calculateBalanceInUSD();
-        snackMachine.getCurrentBalance().calculateBalanceInUSD();
-        currentBalance.setText("Current balance: " + df.format(snackMachine.getCurrentBalance().getBalanceInUSD()));
-        toBeBalance.setText("To Be balance: " + df.format(snackMachine.getCurrentBalance().getBalanceInUSD() - snackMachine.getChange()));
-        insertedCash.setText(String.valueOf(df.format(snackMachine.getMoneySlot().getBalanceInUSD())));
-        change.setText(String.valueOf(df.format(snackMachine.getChange())));
-        confirmButton.setDisable(!snackMachine.acceptMoney(snackMachine.getSnacks()[selectedRow][selectedCol].peek()));
+        if (snackMachine.getSnacks()[selectedRow][selectedCol].size() != 0)
+        {
+            price.setText(String.valueOf(snackMachine.getSnacks()[selectedRow][selectedCol].peek().getSellingPrice()));
+            snackMachine.calculateChange(snackMachine.getSnacks()[selectedRow][selectedCol].peek());
+            snackMachine.getMoneySlot().calculateBalanceInUSD();
+            snackMachine.getCurrentBalance().calculateBalanceInUSD();
+            currentBalance.setText("Current balance: " + df.format(snackMachine.getCurrentBalance().getBalanceInUSD()));
+            toBeBalance.setText("To Be balance: " + df.format(snackMachine.getCurrentBalance().getBalanceInUSD() - snackMachine.getChange()));
+            insertedCash.setText(String.valueOf(df.format(snackMachine.getMoneySlot().getBalanceInUSD())));
+            change.setText(String.valueOf(df.format(snackMachine.getChange())));
+            confirmButton.setDisable(!snackMachine.acceptMoney(snackMachine.getSnacks()[selectedRow][selectedCol].peek()) || (!payWithCash.isSelected()) && !payWithCard.isSelected());
+        }
+
     }
 
     public void confirm() {
