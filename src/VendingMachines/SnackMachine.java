@@ -6,7 +6,6 @@ import Money.Coin;
 import Money.Money;
 import Money.Note;
 import MoneySlot.MoneySlot;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

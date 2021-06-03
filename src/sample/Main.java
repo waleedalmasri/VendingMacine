@@ -1,9 +1,6 @@
 package sample;
 
-import Items.Item;
-import Items.Snack;
-import MoneySlot.MoneySlot;
-import VendingMachines.SnackMachine;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

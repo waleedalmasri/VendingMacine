@@ -31,6 +31,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.EmptyStackException;
 import java.util.ResourceBundle;
 
 
@@ -173,8 +174,7 @@ public class HomeScreenController implements Initializable {
     }
 
     public void updateStatus() {
-        if (snackMachine.getSnacks()[selectedRow][selectedCol].size() != 0)
-        {
+        if (snackMachine.getSnacks()[selectedRow][selectedCol].size() != 0) {
             price.setText(String.valueOf(snackMachine.getSnacks()[selectedRow][selectedCol].peek().getSellingPrice()));
             snackMachine.calculateChange(snackMachine.getSnacks()[selectedRow][selectedCol].peek());
             snackMachine.getMoneySlot().calculateBalanceInUSD();
@@ -227,17 +227,26 @@ public class HomeScreenController implements Initializable {
     }
 
     public void sortByPrice() {
+        try {
+            Arrays.sort(snackMachine.getSnacks(), Comparator.comparingDouble(o -> o[0].size() > 0 ? o[0].peek().getSellingPrice() : Double.POSITIVE_INFINITY));
+            itemsGrid.getChildren().clear();
+            this.mapItemsOnGrid();
+        } catch (EmptyStackException e) {
+            System.out.println("Some items are empty");
+        }
 
-        Arrays.sort(snackMachine.getSnacks(), Comparator.comparingDouble(o -> o[0].peek().getSellingPrice()));
-        itemsGrid.getChildren().clear();
-        this.mapItemsOnGrid();
     }
 
     public void sortByName() {
 
-        Arrays.sort(snackMachine.getSnacks(), Comparator.comparing(o -> o[0].peek().getName()));
-        itemsGrid.getChildren().clear();
-        this.mapItemsOnGrid();
+        try {
+            Arrays.sort(snackMachine.getSnacks(), Comparator.comparing(o -> o[0].size() > 0 ? o[0].peek().getName() : ""));
+            itemsGrid.getChildren().clear();
+            this.mapItemsOnGrid();
+        } catch (EmptyStackException e) {
+            System.out.println("Some items are empty");
+        }
+
     }
 
     public void instantSearch(String token) {
@@ -246,8 +255,9 @@ public class HomeScreenController implements Initializable {
             this.mapItemsOnGrid();
         for (int row = 0; row < 4; row++)
             for (int col = 0; col < 2; col++) {
-                if (snackMachine.getSnacks()[row][col].peek().getName().toLowerCase().startsWith(token.toLowerCase()))
-                    itemsGrid.add(createCustomizeLabel(snackMachine.getSnacks()[row][col].peek(), row, col), col, row);
+                if (snackMachine.getSnacks()[row][col].size() > 0)
+                    if (snackMachine.getSnacks()[row][col].peek().getName().toLowerCase().startsWith(token.toLowerCase()))
+                        itemsGrid.add(createCustomizeLabel(snackMachine.getSnacks()[row][col].peek(), row, col), col, row);
             }
     }
 
