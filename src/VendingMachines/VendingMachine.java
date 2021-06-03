@@ -5,6 +5,7 @@ import Money.Money;
 import MoneySlot.MoneySlot;
 import MoneySlot.NoteBalance;
 import MoneySlot.CoinsBalance;
+import MoneySlot.CardBalance;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
@@ -215,6 +216,7 @@ public abstract class VendingMachine {
     public void clearMoneySlot() {
         NoteBalance toBeCanceledNotes = this.getMoneySlot().getNoteSlot().getNoteBalance();
         CoinsBalance toBeCanceledCoins = this.getMoneySlot().getCoinSlot().getCoinsBalance();
+
         toBeCanceledNotes.setNumberOf50Dollars(0);
         toBeCanceledNotes.setNumberOf20Dollars(0);
         toBeCanceledCoins.setNumberOf1Dollar(0);
@@ -222,8 +224,14 @@ public abstract class VendingMachine {
         toBeCanceledCoins.setNumberOf20c(0);
         toBeCanceledCoins.setNumberOf10c(0);
     }
+    public void clearCardSLot()
+    {
+        CardBalance toBeCanceledCard = this.getMoneySlot().getCardSLot().getCardBalance();
 
+        toBeCanceledCard.setCollectedFromCard(0.0);
+    }
     public abstract boolean purchase(int rowIndex, int colIndex);
+
     public abstract boolean purchaseWithCard(int rowIndex, int colIndex);
 
     public abstract void calculateChange(Item item);

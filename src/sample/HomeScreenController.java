@@ -132,6 +132,8 @@ public class HomeScreenController implements Initializable {
 
     public void onChangePaymentMethod() {
         confirmButton.setDisable(!snackMachine.acceptMoney(snackMachine.getSnacks()[selectedRow][selectedCol].peek()) || (!payWithCash.isSelected()) && !payWithCard.isSelected());
+        currentBalance.setText("Current balance: " + df.format(snackMachine.getCurrentBalance().getBalanceInUSD()));
+        toBeBalance.setText("To Be balance: " + df.format(snackMachine.getCurrentBalance().getBalanceInUSD() + snackMachine.getSnacks()[selectedRow][selectedCol].peek().getSellingPrice()));
         if (payWithCash.isSelected()) {
             coinsBox.setDisable(false);
             notesBox.setDisable(false);
@@ -198,7 +200,6 @@ public class HomeScreenController implements Initializable {
                 this.clearAll();
                 itemsGrid.getChildren().clear();
                 this.mapItemsOnGrid();
-                snackMachine.clearMoneySlot();
             } else {
                 Alert failureAlert = new Alert(Alert.AlertType.ERROR);
                 failureAlert.setContentText("Sorry, SNACKERS cannot serve you with this order. We don't have enough variance of change");
@@ -206,6 +207,7 @@ public class HomeScreenController implements Initializable {
                 this.cancel();
             }
         else if (payWithCard.isSelected()) {
+
             if (snackMachine.purchaseWithCard(selectedRow, selectedCol)) {
                 Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 successAlert.setContentText("Please take your snack fees charged successfully of your card");
@@ -214,7 +216,6 @@ public class HomeScreenController implements Initializable {
                 this.clearAll();
                 itemsGrid.getChildren().clear();
                 this.mapItemsOnGrid();
-                snackMachine.clearMoneySlot();
             } else {
                 Alert failureAlert = new Alert(Alert.AlertType.ERROR);
                 failureAlert.setContentText("Sorry, Something went wrong");

@@ -6,6 +6,7 @@ import Money.Coin;
 import Money.Money;
 import Money.Note;
 import MoneySlot.MoneySlot;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -104,10 +105,10 @@ public class SnackMachine extends VendingMachine implements SnackMachineOperatio
     @Override
     public boolean purchase(int rowIndex, int colIndex) {
         if (validateChange()) {
-            this.clearMoneySlot();
             snacks[rowIndex][colIndex].peek().calculateProfit(snacks[rowIndex][colIndex].peek().getSellingPrice(), snacks[rowIndex][colIndex].peek().getPurchasingPrice());
             snacks[rowIndex][colIndex].peek().setAvailableItems(snacks[rowIndex][colIndex].peek().getAvailableItems() - 1);
             getTransactionsList().add(new Transaction(snacks[rowIndex][colIndex].peek().getName() + " Sold Successfully by cash", snacks[rowIndex][colIndex].peek().getProfit(), new Date()));
+            this.clearMoneySlot();
             snacks[rowIndex][colIndex].pop();
             return true;
         }
@@ -117,13 +118,18 @@ public class SnackMachine extends VendingMachine implements SnackMachineOperatio
     }
 
     public boolean purchaseWithCard(int rowIndex, int colIndex) {
-        this.clearMoneySlot();
         this.getMoneySlot().getCardSLot().getCardBalance().setCollectedFromCard(this.getSnacks()[rowIndex][colIndex].peek().getSellingPrice());
         snacks[rowIndex][colIndex].peek().calculateProfit(snacks[rowIndex][colIndex].peek().getSellingPrice(), snacks[rowIndex][colIndex].peek().getPurchasingPrice());
         snacks[rowIndex][colIndex].peek().setAvailableItems(snacks[rowIndex][colIndex].peek().getAvailableItems() - 1);
         getTransactionsList().add(new Transaction(snacks[rowIndex][colIndex].peek().getName() + " Sold Successfully by card", snacks[rowIndex][colIndex].peek().getProfit(), new Date()));
         snacks[rowIndex][colIndex].pop();
-        this.getCurrentBalance().getCardSLot().getCardBalance().setCollectedFromCard(this.getMoneySlot().getCardSLot().getCardBalance().getCollectedFromCard());
+        this.setChange(0.0);
+        this.getCurrentBalance().getCardSLot().getCardBalance().setCollectedFromCard(this.getCurrentBalance().getCardSLot().getCardBalance().getCollectedFromCard() + this.getMoneySlot().getCardSLot().getCardBalance().getCollectedFromCard());
+        this.getMoneySlot().calculateBalanceInUSD();
+        this.getCurrentBalance().calculateBalanceInUSD();
+        System.out.println(this.getMoneySlot().getCardSLot().getCardBalance().getCollectedFromCard());
+        System.out.println(this.getCurrentBalance().getBalanceInUSD());
+        this.clearCardSLot();
         return true;
     }
 
