@@ -18,6 +18,9 @@ public class MoneySlot {
 
     }
 
+
+
+
     public String getCurrency() {
         return currency;
     }

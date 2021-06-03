@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: #eeeeee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HomeScreenController">
    <left>
@@ -89,13 +90,23 @@
                   <Insets bottom="20.0" top="20.0" />
                </VBox.margin>
             </VBox>
+            <Text fx:id="currentBalance" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Balance:">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </Text>
+            <Text fx:id="toBeBalance" layoutX="20.0" layoutY="545.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To Be:">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </Text>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button fx:id="confirmButton" defaultButton="true" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="205.0" text="Confirm">
+                  <Button fx:id="confirmButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#confirm" prefHeight="30.0" prefWidth="205.0" text="Confirm">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin></Button>
-                  <Button fx:id="cancelButton" cancelButton="true" layoutX="59.0" layoutY="45.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="92.0" text="Cancel">
+                  <Button fx:id="cancelButton" cancelButton="true" layoutX="59.0" layoutY="45.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="92.0" text="Cancel">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -122,17 +133,17 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="721.0">
                <children>
-                  <TextField prefHeight="30.0" prefWidth="439.0" promptText="start typing..." style="-fx-border-color: #aad8d3;">
+                  <TextField fx:id="searchField" prefHeight="30.0" prefWidth="439.0" promptText="start typing..." style="-fx-border-color: #aad8d3;">
                      <HBox.margin>
                         <Insets bottom="16.0" left="20.0" top="20.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="87.0" text="sort A-Z">
+                  <Button mnemonicParsing="false" onAction="#sortByName" prefHeight="30.0" prefWidth="87.0" text="sort A-Z">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" styleClass="button1" text="sort by price">
+                  <Button mnemonicParsing="false" onAction="#sortByPrice" prefHeight="30.0" prefWidth="82.0" styleClass="button1" text="sort by price">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

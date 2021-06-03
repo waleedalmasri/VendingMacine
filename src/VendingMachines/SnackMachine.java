@@ -10,6 +10,7 @@ import MoneySlot.MoneySlot;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Stack;
 
 public class SnackMachine extends VendingMachine implements SnackMachineOperations {
@@ -102,9 +103,16 @@ public class SnackMachine extends VendingMachine implements SnackMachineOperatio
 
 
     @Override
-    public boolean purchase(Item item) {
-        this.calculateChange(item);
-        return (this.validateChange() && this.acceptMoney(item));
+    public boolean purchase(int rowIndex, int colIndex) {
+        if (validateChange()) {
+            snacks[rowIndex][colIndex].peek().calculateProfit(snacks[rowIndex][colIndex].peek().getPurchasingPrice(), snacks[rowIndex][colIndex].peek().getSellingPrice());
+            snacks[rowIndex][colIndex].peek().setAvailableItems(snacks[rowIndex][colIndex].peek().getAvailableItems() - 1);
+            getTransactionsList().add(new Transaction(snacks[rowIndex][colIndex].peek().getName() + " Sold Successfully", snacks[rowIndex][colIndex].peek().getProfit(), new Date()));
+            snacks[rowIndex][colIndex].pop();
+            return true;
+        }
+
+        return false;
 
     }
 

@@ -68,14 +68,22 @@ public abstract class VendingMachine {
     public boolean validateChange() {
 
         if (currentBalance.getBalanceInUSD() >= this.change && this.getChange() > 0) {
-
             double remainingChange = this.getChange();
-            System.out.println(this.getChange());
-            MoneySlot tempSlot = currentBalance;
+            MoneySlot tempSlot = new MoneySlot("USD");
+            tempSlot.getNoteSlot().getNoteBalance().setNumberOf50Dollars(currentBalance.getNoteSlot().getNoteBalance().getNumberOf50Dollars());
+            tempSlot.getNoteSlot().getNoteBalance().setNumberOf20Dollars(currentBalance.getNoteSlot().getNoteBalance().getNumberOf20Dollars());
+
+            tempSlot.getCoinSlot().getCoinsBalance().setNumberOf1Dollar(currentBalance.getCoinSlot().getCoinsBalance().getNumberOf1Dollar());
+            tempSlot.getCoinSlot().getCoinsBalance().setNumberOf50c(currentBalance.getCoinSlot().getCoinsBalance().getNumberOf50c());
+            tempSlot.getCoinSlot().getCoinsBalance().setNumberOf20c(currentBalance.getCoinSlot().getCoinsBalance().getNumberOf20c());
+            tempSlot.getCoinSlot().getCoinsBalance().setNumberOf10c(currentBalance.getCoinSlot().getCoinsBalance().getNumberOf10c());
+
+
             NoteBalance currentNoteBalance = tempSlot.getNoteSlot().getNoteBalance();
             CoinsBalance currentCoinBalance = tempSlot.getCoinSlot().getCoinsBalance();
             int numberOfUnitsToBeRemoved = 0;
             double valueOfUnitsToBeRemoved = 0.0;
+            System.out.println(this.currentBalance.getCoinSlot().getCoinsBalance().toString());
             //-------------------------------------------------
 
             numberOfUnitsToBeRemoved = (int) (remainingChange / 50.0);
@@ -111,7 +119,9 @@ public abstract class VendingMachine {
                 valueOfUnitsToBeRemoved = currentCoinBalance.getNumberOf1Dollar() * 1.0;
                 currentCoinBalance.setNumberOf1Dollar(0);
                 remainingChange -= valueOfUnitsToBeRemoved;
+
             }
+
 
             //-----------------------------------------------
             numberOfUnitsToBeRemoved = (int) (remainingChange / 0.5);
@@ -123,6 +133,7 @@ public abstract class VendingMachine {
                 valueOfUnitsToBeRemoved = currentCoinBalance.getNumberOf50c() * 0.5;
                 currentCoinBalance.setNumberOf50c(0);
                 remainingChange -= valueOfUnitsToBeRemoved;
+
             }
 
             //-----------------------------------------------
@@ -135,6 +146,7 @@ public abstract class VendingMachine {
                 valueOfUnitsToBeRemoved = currentCoinBalance.getNumberOf20c() * 0.2;
                 currentCoinBalance.setNumberOf20c(0);
                 remainingChange -= valueOfUnitsToBeRemoved;
+
             }
 
             //-----------------------------------------------
@@ -147,22 +159,70 @@ public abstract class VendingMachine {
                 valueOfUnitsToBeRemoved = currentCoinBalance.getNumberOf10c() * 0.1;
                 currentCoinBalance.setNumberOf10c(0);
                 remainingChange -= valueOfUnitsToBeRemoved;
+
             }
 
 
-            if (Math.round(remainingChange * 100.0) / 100.0 == 0.0) ;
-            {
-                currentBalance = tempSlot;
-                currentBalance.calculateBalanceInUSD();
+            if (remainingChange == 0.0) {
+                this.currentBalance = tempSlot;
+                this.currentBalance.calculateBalanceInUSD();
+                this.setChange(0.0);
+                tempSlot.calculateBalanceInUSD();
                 return true;
             }
+        }
+        if (this.getChange() == 0) {
+            setReady(true);
+            return true;
         }
         setReady(false);
         return false;
     }
 
+    public void returnMoney() {
+        this.setChange(0.0);
+        NoteBalance currentNoteBalance = this.getCurrentBalance().getNoteSlot().getNoteBalance();
+        CoinsBalance currentCoinBalance = this.getCurrentBalance().getCoinSlot().getCoinsBalance();
 
-    public abstract boolean purchase(Item item);
+        NoteBalance toBeCanceledNotes = this.getMoneySlot().getNoteSlot().getNoteBalance();
+        CoinsBalance toBeCanceledCoins = this.getMoneySlot().getCoinSlot().getCoinsBalance();
+
+        if (currentNoteBalance.getNumberOf20Dollars() >= toBeCanceledNotes.getNumberOf20Dollars())
+            currentNoteBalance.setNumberOf20Dollars(currentNoteBalance.getNumberOf20Dollars() - toBeCanceledNotes.getNumberOf20Dollars());
+
+        if (currentNoteBalance.getNumberOf50Dollars() >= toBeCanceledNotes.getNumberOf50Dollars())
+            currentNoteBalance.setNumberOf50Dollars(currentNoteBalance.getNumberOf50Dollars() - toBeCanceledNotes.getNumberOf50Dollars());
+
+        if (currentCoinBalance.getNumberOf1Dollar() > toBeCanceledCoins.getNumberOf1Dollar())
+            currentCoinBalance.setNumberOf1Dollar(currentCoinBalance.getNumberOf1Dollar() - toBeCanceledCoins.getNumberOf1Dollar());
+
+        if (currentCoinBalance.getNumberOf50c() > toBeCanceledCoins.getNumberOf50c())
+            currentCoinBalance.setNumberOf50c(currentCoinBalance.getNumberOf50c() - toBeCanceledCoins.getNumberOf50c());
+
+        if (currentCoinBalance.getNumberOf20c() > toBeCanceledCoins.getNumberOf20c())
+            currentCoinBalance.setNumberOf20c(currentCoinBalance.getNumberOf20c() - toBeCanceledCoins.getNumberOf20c());
+
+        if (currentCoinBalance.getNumberOf10c() > toBeCanceledCoins.getNumberOf10c())
+            currentCoinBalance.setNumberOf10c(currentCoinBalance.getNumberOf10c() - toBeCanceledCoins.getNumberOf10c());
+
+        this.clearMoneySlot();
+
+        this.currentBalance.calculateBalanceInUSD();
+        this.moneySlot.calculateBalanceInUSD();
+    }
+
+    public void clearMoneySlot() {
+        NoteBalance toBeCanceledNotes = this.getMoneySlot().getNoteSlot().getNoteBalance();
+        CoinsBalance toBeCanceledCoins = this.getMoneySlot().getCoinSlot().getCoinsBalance();
+        toBeCanceledNotes.setNumberOf50Dollars(0);
+        toBeCanceledNotes.setNumberOf20Dollars(0);
+        toBeCanceledCoins.setNumberOf1Dollar(0);
+        toBeCanceledCoins.setNumberOf50c(0);
+        toBeCanceledCoins.setNumberOf20c(0);
+        toBeCanceledCoins.setNumberOf10c(0);
+    }
+
+    public abstract boolean purchase(int rowIndex, int colIndex);
 
     public abstract void calculateChange(Item item);
 

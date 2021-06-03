@@ -22,10 +22,13 @@ public class Snack extends Item {
         switch (this.getWeightInGM()) {
             case 20:
                 this.setProfit((purchasingPrice - sellingPrice) * 1);
+                break;
             case 30:
                 this.setProfit((purchasingPrice - sellingPrice) * 2);
+                break;
             case 50:
                 this.setProfit((purchasingPrice - sellingPrice) * 3);
+                break;
             default:
                 System.out.println("Unrecognized snack weight");
         }
