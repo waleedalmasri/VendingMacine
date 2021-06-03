@@ -21,10 +21,13 @@ public class Drink extends Item {
         switch (this.getSizeInMill()) {
             case 150:
                 this.setProfit((purchasingPrice - sellingPrice) * 1);
+                break;
             case 250:
                 this.setProfit((purchasingPrice - sellingPrice) * 2);
+                break;
             case 300:
                 this.setProfit((purchasingPrice - sellingPrice) * 3);
+                break;
             default:
                 System.out.println("Unrecognized drink size");
         }

@@ -31,10 +31,13 @@ public class Coffee extends Item {
         switch (this.getCupSize()) {
             case 's':
                 this.setProfit((purchasingPrice - sellingPrice) * 1);
+                break;
             case 'm':
                 this.setProfit((purchasingPrice - sellingPrice) * 2);
+                break;
             case 'l':
                 this.setProfit((purchasingPrice - sellingPrice) * 3);
+                break;
             default:
                 System.out.println("Unrecognized cup size");
         }

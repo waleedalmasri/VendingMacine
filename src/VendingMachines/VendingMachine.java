@@ -85,7 +85,6 @@ public abstract class VendingMachine {
             CoinsBalance currentCoinBalance = tempSlot.getCoinSlot().getCoinsBalance();
             int numberOfUnitsToBeRemoved = 0;
             double valueOfUnitsToBeRemoved = 0.0;
-            System.out.println(this.currentBalance.getCoinSlot().getCoinsBalance().toString());
             //-------------------------------------------------
 
             numberOfUnitsToBeRemoved = (int) (remainingChange / 50.0);

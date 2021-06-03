@@ -8,6 +8,7 @@ public class MoneySlot {
     private String currency;
     private CoinSlot coinSlot;
     private NoteSlot noteSlot;
+    private CardSLot cardSLot;
     private double balanceInUSD;
 
     public MoneySlot(String currency) {
@@ -15,11 +16,17 @@ public class MoneySlot {
         this.balanceInUSD = 0.0;
         this.coinSlot = new CoinSlot();
         this.noteSlot = new NoteSlot();
+        this.cardSLot = new CardSLot();
 
     }
 
+    public CardSLot getCardSLot() {
+        return cardSLot;
+    }
 
-
+    public void setCardSLot(CardSLot cardSLot) {
+        this.cardSLot = cardSLot;
+    }
 
     public String getCurrency() {
         return currency;

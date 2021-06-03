@@ -42,7 +42,7 @@ public class HomeScreenController implements Initializable {
     @FXML
     HBox coinsBox, notesBox;
     @FXML
-    TextField selectedItem, change, insertedCash, searchField;
+    TextField selectedItem, change, insertedCash, searchField, price;
     @FXML
     Button confirmButton, cancelButton;
     @FXML
@@ -135,6 +135,7 @@ public class HomeScreenController implements Initializable {
         } else {
             coinsBox.setDisable(true);
             notesBox.setDisable(true);
+            confirmButton.setDisable(false);
         }
 
 
@@ -170,6 +171,7 @@ public class HomeScreenController implements Initializable {
     }
 
     public void updateStatus() {
+        price.setText(String.valueOf(snackMachine.getSnacks()[selectedRow][selectedCol].peek().getSellingPrice()));
         snackMachine.calculateChange(snackMachine.getSnacks()[selectedRow][selectedCol].peek());
         snackMachine.getMoneySlot().calculateBalanceInUSD();
         snackMachine.getCurrentBalance().calculateBalanceInUSD();
@@ -181,20 +183,39 @@ public class HomeScreenController implements Initializable {
     }
 
     public void confirm() {
-        if (snackMachine.purchase(selectedRow, selectedCol)) {
-            Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            successAlert.setContentText("Please take your snack and change");
-            this.updateStatus();
-            successAlert.show();
-            this.clearAll();
-            itemsGrid.getChildren().clear();
-            this.mapItemsOnGrid();
-            snackMachine.clearMoneySlot();
-        } else {
-            Alert failureAlert = new Alert(Alert.AlertType.ERROR);
-            failureAlert.setContentText("Sorry, SNACKERS cannot serve you with this order. We don't have enough variance of change");
-            failureAlert.show();
-            this.cancel();
+        if (payWithCash.isSelected())
+            if (snackMachine.purchase(selectedRow, selectedCol)) {
+                Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                successAlert.setContentText("Please take your snack and change");
+                this.updateStatus();
+                successAlert.show();
+                this.clearAll();
+                itemsGrid.getChildren().clear();
+                this.mapItemsOnGrid();
+                snackMachine.clearMoneySlot();
+            } else {
+                Alert failureAlert = new Alert(Alert.AlertType.ERROR);
+                failureAlert.setContentText("Sorry, SNACKERS cannot serve you with this order. We don't have enough variance of change");
+                failureAlert.show();
+                this.cancel();
+            }
+        else if (payWithCard.isSelected()) {
+            if (snackMachine.purchaseWithCard(selectedRow, selectedCol)) {
+                Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                successAlert.setContentText("Please take your snack fees charged successfully of your card");
+                snackMachine.getMoneySlot().getCardSLot().getCardBalance().setCollectedFromCard(snackMachine.getSnacks()[selectedRow][selectedCol].peek().getSellingPrice());
+                this.updateStatus();
+                successAlert.show();
+                this.clearAll();
+                itemsGrid.getChildren().clear();
+                this.mapItemsOnGrid();
+                snackMachine.clearMoneySlot();
+            } else {
+                Alert failureAlert = new Alert(Alert.AlertType.ERROR);
+                failureAlert.setContentText("Sorry, Something went wrong");
+                failureAlert.show();
+                this.cancel();
+            }
         }
 
 
@@ -233,6 +254,7 @@ public class HomeScreenController implements Initializable {
     public void clearAll() {
         selectedItem.clear();
         change.clear();
+        price.clear();
         insertedCash.clear();
         snackMachine.setChange(0.0);
         currentBalance.setText("Current balance: " + df.format(snackMachine.getCurrentBalance().getBalanceInUSD()));
