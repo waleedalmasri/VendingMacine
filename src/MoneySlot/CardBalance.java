@@ -14,4 +14,11 @@ public class CardBalance {
     public void setCollectedFromCard(double collectedFromCard) {
         this.collectedFromCard = collectedFromCard;
     }
+
+    @Override
+    public String toString() {
+        return "CardBalance{\n" +
+                "\ncollectedFromCard=" + collectedFromCard +
+                '}';
+    }
 }

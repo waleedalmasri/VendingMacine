@@ -21,5 +21,6 @@
       </HBox>
       <TextArea fx:id="summary" editable="false" layoutX="31.0" layoutY="113.0" prefHeight="629.0" prefWidth="708.0" />
       <TextField fx:id="profit" layoutX="747.0" layoutY="113.0" prefHeight="25.0" prefWidth="270.0" promptText="Accumulated Profit" />
+      <TextArea fx:id="balanceDist" editable="false" layoutX="747.0" layoutY="146.0" prefHeight="595.0" prefWidth="270.0" />
    </children>
 </AnchorPane>

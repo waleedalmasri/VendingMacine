@@ -47,11 +47,11 @@ public class CoinsBalance {
 
     @Override
     public String toString() {
-        return "CoinsBalance{" +
+        return "CoinsBalance{\n" +
                 "numberOf10c=" + numberOf10c +
-                ", numberOf20c=" + numberOf20c +
-                ", numberOf50c=" + numberOf50c +
-                ", numberOf1Dollar=" + numberOf1Dollar +
+                ",\n numberOf20c=" + numberOf20c +
+                ",\n numberOf50c=" + numberOf50c +
+                ",\n numberOf1Dollar=" + numberOf1Dollar +
                 '}';
     }
 }

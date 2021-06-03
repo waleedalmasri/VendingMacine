@@ -117,11 +117,12 @@ public class SnackMachine extends VendingMachine implements SnackMachineOperatio
     }
 
     public boolean purchaseWithCard(int rowIndex, int colIndex) {
+        this.getMoneySlot().getCardSLot().getCardBalance().setCollectedFromCard(this.getSnacks()[rowIndex][colIndex].peek().getSellingPrice());
         snacks[rowIndex][colIndex].peek().calculateProfit(snacks[rowIndex][colIndex].peek().getSellingPrice(), snacks[rowIndex][colIndex].peek().getPurchasingPrice());
         snacks[rowIndex][colIndex].peek().setAvailableItems(snacks[rowIndex][colIndex].peek().getAvailableItems() - 1);
         getTransactionsList().add(new Transaction(snacks[rowIndex][colIndex].peek().getName() + " Sold Successfully", snacks[rowIndex][colIndex].peek().getProfit(), new Date()));
         snacks[rowIndex][colIndex].pop();
-        this.getCurrentBalance().getCardSLot().setCardBalance(this.getMoneySlot().getCardSLot().getCardBalance());
+        this.getCurrentBalance().getCardSLot().getCardBalance().setCollectedFromCard(this.getMoneySlot().getCardSLot().getCardBalance().getCollectedFromCard());
         return true;
     }
 

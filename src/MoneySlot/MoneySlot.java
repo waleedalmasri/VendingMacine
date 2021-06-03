@@ -82,7 +82,7 @@ public class MoneySlot {
                 this.noteSlot.getNoteBalance().getNumberOf20Dollars() * 20.0)
                 + (this.noteSlot.getNoteBalance().getNumberOf50Dollars() * 50.0));
 
-        this.setBalanceInUSD(coinsSum + noteSum);
+        this.setBalanceInUSD(coinsSum + noteSum + this.getCardSLot().getCardBalance().getCollectedFromCard());
 
 
     }

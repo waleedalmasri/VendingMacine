@@ -27,9 +27,9 @@ public class NoteBalance {
 
     @Override
     public String toString() {
-        return "NoteBalance{" +
+        return "NoteBalance{\n" +
                 "numberOf20Dollars=" + numberOf20Dollars +
-                ", numberOf50Dollars=" + numberOf50Dollars +
+                ",\n numberOf50Dollars=" + numberOf50Dollars +
                 '}';
     }
 }

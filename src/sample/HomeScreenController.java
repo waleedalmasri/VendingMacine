@@ -203,7 +203,6 @@ public class HomeScreenController implements Initializable {
             if (snackMachine.purchaseWithCard(selectedRow, selectedCol)) {
                 Alert successAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 successAlert.setContentText("Please take your snack fees charged successfully of your card");
-                snackMachine.getMoneySlot().getCardSLot().getCardBalance().setCollectedFromCard(snackMachine.getSnacks()[selectedRow][selectedCol].peek().getSellingPrice());
                 this.updateStatus();
                 successAlert.show();
                 this.clearAll();
